@@ -8,6 +8,27 @@
       "when": 1726443359662,
       "tag": "0000_soft_the_anarchist",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772563819652,
+      "tag": "0001_cute_freak",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772565408061,
+      "tag": "0002_flashy_green_goblin",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1772566174314,
+      "tag": "0003_mixed_cobalt_man",
+      "breakpoints": true
     }
   ]
 }

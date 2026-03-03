@@ -3,12 +3,14 @@ import { redirect } from 'next/navigation';
 import { Team } from '@/lib/db/schema';
 import {
   getTeamByStripeCustomerId,
+  getFirstTeamMember,
   getUser,
-  updateTeamSubscription
+  updateTeamSubscription,
+  saveSubscription
 } from '@/lib/db/queries';
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-04-30.basil'
+  apiVersion: '2025-08-27.basil'
 });
 
 export async function createCheckoutSession({
@@ -120,6 +122,9 @@ export async function handleSubscriptionChange(
   const customerId = subscription.customer as string;
   const subscriptionId = subscription.id;
   const status = subscription.status;
+  // Use current_period_end which is a Unix timestamp
+  const periodEnd = (subscription as any).current_period_end ?? Math.floor(Date.now() / 1000);
+  const currentPeriodEnd = new Date(periodEnd * 1000);
 
   const team = await getTeamByStripeCustomerId(customerId);
 
@@ -128,12 +133,34 @@ export async function handleSubscriptionChange(
     return;
   }
 
+  const userId = await getFirstTeamMember(team.id);
+  if (!userId) {
+    console.error('No team members found for team:', team.id);
+    return;
+  }
+
+  const plan = subscription.items.data[0]?.plan;
+  const planName = (plan?.product as Stripe.Product).name;
+  const priceId = subscription.items.data[0]?.price.id;
+
+  // Always save to subscriptions table
+  await saveSubscription({
+    userId,
+    teamId: team.id,
+    stripeSubscriptionId: subscriptionId,
+    stripeCustomerId: customerId,
+    priceId,
+    planName,
+    status,
+    currentPeriodEnd
+  });
+
+  // Also update teams table for backward compatibility
   if (status === 'active' || status === 'trialing') {
-    const plan = subscription.items.data[0]?.plan;
     await updateTeamSubscription(team.id, {
       stripeSubscriptionId: subscriptionId,
       stripeProductId: plan?.product as string,
-      planName: (plan?.product as Stripe.Product).name,
+      planName,
       subscriptionStatus: status
     });
   } else if (status === 'canceled' || status === 'unpaid') {
