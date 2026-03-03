@@ -110,17 +110,71 @@ In your Vercel project settings (or during deployment), add all the necessary en
 
 ## Other Templates
 
-Minimal README for the `core` application.
+The core platform providing AI-powered tools for sales, marketing, and customer engagement.
 
-Overview
-- Next.js application with API routes, Drizzle for database handling, and Stripe integration.
+## Features
 
-Security
-- Secrets must never be committed. Use environment variables and a `.env` file.
+### Core Tools
 
-Quick start
-- Install dependencies: `pnpm install`
-- Run locally: `pnpm dev`
+1. **AI Landing Page Generator**
+   - Generate custom landing pages with AI-written copy
+   - Tweak and customize generated content
+   - Export ready-to-deploy pages
 
-License
-- See the `LICENSE` file in the repository.
+2. **AI Chatbot Builder**
+   - Upload docs, FAQs, and knowledge base
+   - Choose deployment mode: logic-based, AI-powered, or custom API integration
+   - Seamless integration with your website
+
+3. **AI Lead Qualification & Tracking**
+   - Chatbot tracks user intent and conversation context
+   - Automatic lead scoring and qualification
+   - Lead database and management
+   - Slack notifications for new qualified leads
+
+### Bonus Features
+
+4. **AI Proposal Generator**
+   - Generate professional proposals powered by AI
+
+5. **AI QR Code Generator**
+   - Create dynamic QR codes for campaigns and tracking
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Database**: [Postgres](https://www.postgresql.org/) + [Drizzle](https://orm.drizzle.team/)
+- **Payments**: [Stripe](https://stripe.com/)
+- **AI**: Integrated AI APIs for content generation and chatbot intelligence
+- **UI**: [shadcn/ui](https://ui.shadcn.com/)
+
+## Setup
+
+Install dependencies:
+```bash
+pnpm install
+```
+
+Create your `.env` file with required variables (database, Stripe keys, AI API keys, etc).
+
+Run migrations and seed:
+```bash
+pnpm db:migrate
+pnpm db:seed
+```
+
+Start the development server:
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+## Security
+
+- Never commit secrets or API keys. Use environment variables in `.env` (gitignored).
+- Keep AI API keys secure.
+
+## License
+
+See the `LICENSE` file in the repository.
