@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getUser } from '@/lib/db/queries';
 import { requireAuth } from '@/lib/auth/api';
 import { checkSubscriptionAccess } from '@/lib/payments/subscription';
